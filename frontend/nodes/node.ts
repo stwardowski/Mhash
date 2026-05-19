@@ -1,4 +1,6 @@
 import { CanvasController } from "../others/canvasNavigation.js";
+import { Connections } from "../others/connections.js";
+import { Connection } from "../others/connection.js";
 import { SocketScheme, DataType, SocketType, Socket} from "../others/socket.js";
 
 export enum NodeKind {
@@ -61,6 +63,23 @@ export abstract class BaseNode {
         });
     }
 
+    protected updateSocketPosition(){
+        this.sockets.forEach((socket: Socket) => {
+            const pos = socket.getCanvasPosition();
+            if(socket.socketType === SocketType.INPUT){
+                socket.connectedTo.forEach((connection: Connection) => {
+                    connection.updateLineEndpoint(pos.x, pos.y)
+                });
+            }
+            else{
+                socket.connectedTo.forEach((connection: Connection) => {
+                    connection.updateLineBasepoint(pos.x, pos.y)
+                });
+            }
+        });
+    }
+
+
     private createHeader(): void {
         const header = document.createElement("div");
         header.className = "node-header";
@@ -88,6 +107,7 @@ export abstract class BaseNode {
             const scale = this.getScale();
             this.container.style.left = `${nodeX + (e.clientX - startX) / scale}px`;
             this.container.style.top = `${nodeY + (e.clientY - startY) / scale}px`;
+            this.updateSocketPosition()
         });
 
         window.addEventListener('mouseup', () => {

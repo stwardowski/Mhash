@@ -1,6 +1,6 @@
 import { NodeManager } from "./nodeManager.js";
 import { NodeKind } from "../nodes/node.js";
-import { Connections } from "./connection.js";
+import { Connections } from "./connections.js";
 
 export class CanvasController {
     private static instance: CanvasController;

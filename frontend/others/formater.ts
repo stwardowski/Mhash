@@ -1,11 +1,10 @@
-export type InFormat = 'BIN' | 'TEXT' | 'HEX' | 'DEC' | 'OCT';
+export type InFormat = 'BIN' | 'TEXT' | 'HEX' | 'DEC';
 
 export const placeholders: Record<InFormat, string> = {
     'BIN': '1000011',
     'HEX': '9AF4DB1',
     'TEXT': 'Message',
     'DEC': '12345',
-    'OCT': '7654321'
 };
 
 export const regexes: Record<InFormat, string> = {
@@ -13,7 +12,6 @@ export const regexes: Record<InFormat, string> = {
     'HEX': '^[0-9A-Fa-f]*$',
     'TEXT': '^.*$',
     'DEC': '^[0-9]*$',
-    'OCT': '^[0-7]*$'
 };
 
 export class FormatManager {
@@ -23,7 +21,6 @@ export class FormatManager {
 
     protected static formatToBase: Record<InFormat, number> = {
         'BIN': 2,
-        'OCT': 8,
         'DEC': 10,
         'HEX': 16,
         'TEXT': -1
