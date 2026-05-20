@@ -19,7 +19,7 @@ export abstract class BaseNode {
     public container: HTMLDivElement;
 
     protected sockets: Socket[] = [];
-    private startY = 100;
+    private startY = 50;
     static gap = 25;
 
     static ID = 0 
@@ -38,7 +38,7 @@ export abstract class BaseNode {
         this.ID = BaseNode.ID;
         BaseNode.ID++
         this.container = document.createElement("div");
-        this.container.classList.add("node");
+        this.container.className = "node";
         this.container.style.position = "absolute"; 
 
         this.createSockets(socketSchemes, this.sockets);        

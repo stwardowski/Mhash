@@ -39,8 +39,9 @@ export class VariableNode extends BaseNode {
         this.format = new inputFormater(this.droplist[0] as InFormat, this.choose.getElement(), this.input);
     }
 
-    private createInput(): HTMLInputElement {
-        const input = document.createElement("input");
+    private createInput(): HTMLTextAreaElement {
+        const input = document.createElement("textarea");
+        input.rows = 3;
         return input
     }
 

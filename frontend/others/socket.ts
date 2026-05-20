@@ -53,10 +53,11 @@ export class Socket {
     private createDiv(yPos:number): HTMLDivElement {
         const socketDiv = document.createElement("div");
         socketDiv.style.cssText = `
+            socketDiv.className = "socket-wrapper";
             width: 25px;
             height: 25px;
             position: absolute;
-            left: ${this.socketType === SocketType.INPUT ? "-10px" : "170px"};
+            left: ${this.socketType === SocketType.INPUT ? "-15px" : "170px"};
             top: ${yPos}px;
             pointer-events: auto;
             cursor: pointer;
@@ -67,6 +68,7 @@ export class Socket {
     private createCircle(): HTMLDivElement {
         const circle = document.createElement("div");
         circle.style.cssText = `
+            class: socket;
             width: 12px;
             height: 12px;
             background: ${TypeColors[this.dataType] || "#888"};

@@ -8,10 +8,11 @@ export const placeholders: Record<InFormat, string> = {
 };
 
 export const regexes: Record<InFormat, string> = {
-    'BIN': '^[01]*$',
-    'HEX': '^[0-9A-Fa-f]*$',
-    'TEXT': '^.*$',
-    'DEC': '^[0-9]*$',
+
+    'BIN': '^[01]{1,64}$',           
+    'HEX': '^[0-9A-Fa-f]{1,32}$',    
+    'TEXT': '^(?!\\s*$).+',           
+    'DEC': '^[1-9][0-9]*$|^0$',      
 };
 
 export class FormatManager {

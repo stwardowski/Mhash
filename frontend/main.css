@@ -3,7 +3,6 @@ body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-
 }
 
 html, body {
@@ -20,6 +19,7 @@ html, body {
 #tools {
     background: var(--node-color);
     width: 10%;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
 }
 
 #canvas {
@@ -29,23 +29,28 @@ html, body {
 }
 
 :root {
-    --node-color: #a4485e;
-    --node-background: #e4c5af;
-    --node-shadow: #406b8c;
+    --node-color: #53170d;
+    --node-background: #e0c57c;
+    --node-shadow: #f04b0a;
+    --node-accent: #0b5253;
 }
 
 /* ==================== NODE ==================== */
 .node {
     background: var(--node-background);
     border: 3px solid var(--node-color);
-    box-shadow: 4px 4px 0px var(--node-shadow);
+    box-shadow: 5px 5px 0px var(--node-shadow);
     font-family: 'Courier New', monospace;
     font-size: 12px;
-    color: var(--node-color);
-    min-width: 180px;
-    padding: 0;
-    image-rendering: pixelated;
+    color: white;
+    width: 180px;
     position: relative;
+    transition: transform 0.3s ease, box-shadow 0.1s ease;
+}
+
+.node:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0px var(--node-shadow);
 }
 
 .node-header {
@@ -56,17 +61,23 @@ html, body {
     font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+}
+.node-content{
+    padding:5%;
 }
 
 /* ==================== ROW ==================== */
 .row {
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    padding: 5px 8px;
     gap: 6px;
-    border-bottom: 1px dashed var(--node-shadow);
-    background: #FFFFFF;
+    border-bottom: 1px solid rgba(200, 85, 110, 0.3);
+    background: var(--node-background);
+    transition: background 0.1s ease;
 }
+
 
 .row:last-child {
     border-bottom: none;
@@ -74,43 +85,39 @@ html, body {
 
 /* ==================== BUTTONY ==================== */
 .button, .mode-btn {
-    background: var(--node-background);
+    background: var(--node-accent);
     border: 2px solid var(--node-color);
-    color: var(--node-color);
+    color: white;
     padding: 4px 12px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 2px 2px 0px var(--node-shadow);
-    transition: all 0.1s;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+    transition: all 0.1s ease;
+    font-weight: bold;
 }
 
 .button:hover, .mode-btn:hover {
     background: var(--node-color);
-    color: var(--node-background);
-    box-shadow: 2px 2px 0px #000000;
+    color: white;
+    border-color: var(--node-color);
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
+    transform: translate(-1px, -1px);
 }
 
 .button.active, .mode-btn.active {
     background: var(--node-color);
-    color: var(--node-background);
-    box-shadow: none;
-    transform: translate(2px, 2px);
+    color: white;
+    border-color: var(--node-color);
+    box-shadow: inset 1px 1px 0px rgba(0,0,0,0.3);
+    transform: translate(1px, 1px);
 }
 
 .button:active, .mode-btn:active {
-    box-shadow: none;
-    transform: translate(2px, 2px);
-}
-
-.button:not(.active), .mode-btn:not(.active) {
-    opacity: 0.7;
-}
-
-.button:not(.active):hover, .mode-btn:not(.active):hover {
-    opacity: 1;
+    box-shadow: inset 1px 1px 0px rgba(0,0,0,0.3);
+    transform: translate(1px, 1px);
 }
 
 .btn-group {
@@ -120,212 +127,128 @@ html, body {
 }
 
 .btn-group span {
-    color: var(--node-color);
-    opacity: 0.5;
+    color: white;
+    opacity: 0.6;
     font-weight: bold;
+    font-size: 10px;
 }
 
 /* ==================== INPUTY ==================== */
 input[type="number"], .num-input, .count {
-    background: var(--node-background);
+    background: var(--node-accent);
     border: 2px solid var(--node-color);
-    color: var(--node-color);
+    color: white;
     padding: 4px 8px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
     width: 60px;
     outline: none;
-    box-shadow: 2px 2px 0px var(--node-shadow);
-    transition: all 0.1s;
+    transition: all 0.1s ease;
+    font-weight: bold;
 }
 
-input[type="number"]:focus, .num-input:focus, .count:focus {
-    border: 2px solid var(--node-color);
-    box-shadow: inset 0 0 0 1px var(--node-shadow);
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-input[type="text"] {
-    background: var(--node-background);
+input {
     border: 2px solid var(--node-color);
-    color: var(--node-color);
+    color: rgb(150, 50, 50);
     padding: 4px 8px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
     outline: none;
-    box-shadow: 2px 2px 0px var(--node-shadow);
-    transition: all 0.1s;
+    transition: all 0.1s ease;
+    width: 80%;
+    min-height: 60px;
+     word-wrap: break-word;
 }
 
-input[type="text"]:focus {
-    border: 2px solid var(--node-color);
-    box-shadow: inset 0 0 0 1px var(--node-shadow);
-}
-
-/* ==================== SPAN / TEKST ==================== */
+/* ==================== SPAN ==================== */
 span {
-    color: var(--node-color);
+    color: white;
     font-family: 'Courier New', monospace;
     font-size: 10px;
-    opacity: 0.8;
+    opacity: 0.7;
+    font-weight: bold;
 }
 
-/* ==================== DROPDOWN / SELECT ==================== */
+/* ==================== SELECT ==================== */
 select, .dropdown-select {
-    background: var(--node-background);
+    background: var(--node-accent);
     border: 2px solid var(--node-color);
-    color: var(--node-color);
+    color: white;
     padding: 4px 8px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
     cursor: pointer;
     outline: none;
-    box-shadow: 2px 2px 0px var(--node-shadow);
-    transition: all 0.1s;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23072b36'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 6px center;
-    padding-right: 24px;
+    transition: all 0.1s ease;
+    font-weight: bold;
 }
 
 select:hover, .dropdown-select:hover {
-    background-color: var(--node-color);
-    color: var(--node-background);
-    box-shadow: 2px 2px 0px #000000;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23ffffff'/%3E%3C/svg%3E");
-}
-
-select:focus, .dropdown-select:focus {
-    border: 2px solid var(--node-color);
-    box-shadow: inset 0 0 0 1px var(--node-shadow);
+    background: var(--node-color);
+    border-color: var(--node-color);
 }
 
 select option, .dropdown-select option {
     background: var(--node-background);
-    color: var(--node-color);
-    font-family: 'Courier New', monospace;
+    color: white;
 }
 
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+/* ==================== LINIE ==================== */
+.line-connection {
+    stroke: var(--node-shadow);
+    stroke-width: 2.5;
+    transition: all 0.2s ease;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
-.dropdown-label {
-    color: var(--node-color);
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* ==================== CYCLE BUTTON / BITSIZE ==================== */
-.cycle-button, .bitsize-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--node-background);
-    border: 2px solid var(--node-color);
-    padding: 4px 8px;
-    box-shadow: 2px 2px 0px var(--node-shadow);
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    color: var(--node-color);
-}
-
-.cycle-button button, 
-.bitsize-container button,
-.cycle-btn {
-    background: var(--node-background);
-    border: 2px solid var(--node-color);
-    color: var(--node-color);
-    padding: 2px 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
+.line-connection:hover {
+    stroke: rgba(243, 12, 12, 0.5);
+    stroke-width: 6;
     cursor: pointer;
-    box-shadow: 1px 1px 0px var(--node-shadow);
-    transition: all 0.1s;
-    min-width: 30px;
 }
 
-.cycle-button button:hover,
-.bitsize-container button:hover,
-.cycle-btn:hover {
-    background: var(--node-color);
-    color: var(--node-background);
-    box-shadow: 1px 1px 0px #000000;
+.line-temp {
+    stroke: rgba(243, 12, 12, 0.5);
+    stroke-width: 2;
+    stroke-dasharray: 6;
+    animation: dash 0.6s linear infinite;
 }
 
-.cycle-button button:active,
-.bitsize-container button:active,
-.cycle-btn:active {
-    box-shadow: none;
-    transform: translate(1px, 1px);
-}
-
-.cycle-button .cycle-value,
-.bitsize-container .bitsize-value,
-.cycle-label {
-    min-width: 24px;
-    text-align: center;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: var(--node-color);
-}
-
-.cycle-arrows {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.cycle-arrow {
-    background: var(--node-background);
-    border: 1px solid var(--node-color);
-    color: var(--node-color);
-    padding: 1px 4px;
-    font-size: 8px;
-    cursor: pointer;
-    line-height: 1;
-    box-shadow: 1px 1px 0px var(--node-shadow);
-}
-
-.cycle-arrow:hover {
-    background: var(--node-color);
-    color: var(--node-background);
-}
-
-/* ==================== SVG / SOCKETY ==================== */
-.node svg {
-    filter: none;
-}
-
-.node svg circle {
-    fill: var(--node-background);
-    stroke: var(--node-color);
-    stroke-width: 2px;
-}
-
-.node svg circle:hover {
-    fill: var(--node-color);
+@keyframes dash {
+    to {
+        stroke-dashoffset: -12;
+    }
 }
 
 /* ==================== DODATKOWE ==================== */
 .node-line {
     border-bottom: 2px solid var(--node-color);
     margin: 4px 0;
+    opacity: 0.5;
 }
 
-/* Tooltip */
-.tooltip {
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
     background: var(--node-color);
-    color: var(--node-background);
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    padding: 4px 8px;
-    border: 1px solid var(--node-background);
-    box-shadow: 2px 2px 0px var(--node-shadow);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: white;
 }

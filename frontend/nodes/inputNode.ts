@@ -23,9 +23,10 @@ export class InputNode extends BaseNode {
         this.format = new inputFormater('BIN', this.dropdown.getElement(), input);
     }
 
-    private createInput(): HTMLInputElement {
-        const input = document.createElement("input");
+    private createInput(): HTMLTextAreaElement {
+        const input = document.createElement("textarea");
         input.id = "message";
+        input.rows = 3;
         input.className = "input";
         this.newRow(input);
         return input;

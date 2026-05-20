@@ -65,8 +65,6 @@ export class Connections {
         line.setAttribute("x2", `${x2}`);
         line.setAttribute("y2", `${y2}`);
         line.setAttribute("class", lineClass);
-        line.setAttribute("stroke", "#e74064");
-        line.setAttribute("stroke-width", "4");
         line.style.pointerEvents = 'stroke';
         line.style.cursor = 'pointer';
         return line;
@@ -104,7 +102,7 @@ export class Connections {
 
     public createTempLine(x1: number, y1: number, x2: number, y2: number): void {
         this.removeTempLine();
-        
+         
         const line = this.makeLine(x1,y1,x2,y2,"line-temp")
         line.style.pointerEvents = 'none';
         this.svgCanvas.appendChild(line);
@@ -143,16 +141,14 @@ export class Connections {
         this.svgCanvas.addEventListener('mouseover', (event) => {
             const target = event.target as SVGElement;
             if (target && target.tagName === 'line' && target.classList.contains('line-connection')) {
-                target.setAttribute('stroke', '#ff0000');
-                target.setAttribute('stroke-width', '6');
+                target.classList.add('line-hover');
             }
         });
         
         this.svgCanvas.addEventListener('mouseout', (event) => {
             const target = event.target as SVGElement;
             if (target && target.tagName === 'line' && target.classList.contains('line-connection')) {
-                target.setAttribute('stroke', '#e74064');
-                target.setAttribute('stroke-width', '4');
+                target.classList.remove('line-hover');
             }
         });
     }

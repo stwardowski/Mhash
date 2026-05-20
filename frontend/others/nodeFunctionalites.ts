@@ -43,7 +43,7 @@ export class BitSize {
         
         this.currentSize = this.sizes[0];        
         this.button = document.createElement("button");
-        this.button.className = "cycle-button";
+        this.button.className = "button";
         this.button.id = id;
         this.button.textContent = this.currentSize;
         

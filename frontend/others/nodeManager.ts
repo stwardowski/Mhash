@@ -11,7 +11,8 @@ import { SplitNode } from '../nodes/splitNode.js';
 
 export class NodeManager {
     private nodes: BaseNode[] = [];
-    private currentNodeType: NodeKind | null = null;
+    private currentNode: BaseNode | null = null;
+    private creatingNodeType: NodeKind | null = null;
     private isPlacementMode = false;
     private canvas: HTMLElement;
 
@@ -33,13 +34,13 @@ export class NodeManager {
 
     public setPlacementMode(active: boolean, nodeType: NodeKind | null): void {
         this.isPlacementMode = active;
-        this.currentNodeType = nodeType;
+        this.creatingNodeType = nodeType;
     }
 
     public createNodeAt(x: number, y: number): void {
-        if (!this.isPlacementMode || this.currentNodeType === null) return;
+        if (!this.isPlacementMode || this.creatingNodeType === null) return;
         
-        const node = NodeManager.NODE_FACTORY[this.currentNodeType]();
+        const node = NodeManager.NODE_FACTORY[this.creatingNodeType]();
         node.container.style.left = `${x}px`;
         node.container.style.top = `${y}px`;
         

@@ -1,9 +1,9 @@
 import { FormatManager, InFormat, placeholders } from "./formater.js";
 
 export class inputFormater extends FormatManager {
-    private input: HTMLInputElement;
+    private input: HTMLTextAreaElement;
 
-    constructor(initialFormat: InFormat = 'BIN', select: HTMLSelectElement, input: HTMLInputElement) {
+    constructor(initialFormat: InFormat = 'BIN', select: HTMLSelectElement, input: HTMLTextAreaElement) {
         super(initialFormat, select);
         this.input = input;
         this.input.addEventListener('input', this.handleInput.bind(this));
