@@ -10,14 +10,14 @@ let baseSockets: SocketScheme[] = [
 ];
 
 export class VariableNode extends BaseNode {
-    protected get nodeKind() { return "VARIABLE"; }    
+    protected get nodeKind() { return NodeKind.VARIABLE; }    
 
     static variableID = 0;
 
     private cycleButton: BitSize;
-    private choose: Dropdown
+    private format: Dropdown
     private input;
-    private format: inputFormater;
+    private inputFormater: inputFormater;
 
     private readonly droplist: string[] = ['DEC', 'BIN'];
     
@@ -25,8 +25,8 @@ export class VariableNode extends BaseNode {
         super(baseSockets);
         VariableNode.variableID++;
 
-        this.choose = new Dropdown(this.droplist)
-        this.newRow(this.choose.getElement())
+        this.format = new Dropdown(this.droplist)
+        this.newRow(this.format.getElement())
         
         this.cycleButton = new BitSize("");
         this.newRow(this.cycleButton.getElement())
@@ -36,7 +36,7 @@ export class VariableNode extends BaseNode {
         this.newRow(this.input)
         
         this.renderLayout();
-        this.format = new inputFormater(this.droplist[0] as InFormat, this.choose.getElement(), this.input);
+        this.inputFormater = new inputFormater(this.droplist[0] as InFormat, this.format.getElement(), this.input);
     }
 
     private createInput(): HTMLTextAreaElement {
@@ -51,5 +51,15 @@ export class VariableNode extends BaseNode {
                 <span style="font-size: 12px; color: #aaa">${VariableNode.variableID}</span>
                 <span style="font-size: 12px; color: #aaa">ID</span>`;
         this.container.appendChild(this.content);
+    }
+
+    public getFormat(){
+        return this.format.getCurrent();
+    }  
+    public getInput(){
+        return this.input.textContent;
+    }
+    public getType(){
+        return this.cycleButton.getCurrent();
     }
 }

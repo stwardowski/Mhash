@@ -9,7 +9,7 @@ let baseSockets: SocketScheme[] = [
 ];
 
 export class MathNode extends BaseNode {
-    protected get nodeKind() { return "MATH"; }    
+    protected get nodeKind() { return NodeKind.MATH; }    
     
     private readonly droplist: string[] = ['ADD', 'MUL', 'SUB'];
     private dropdown: Dropdown;
@@ -22,4 +22,12 @@ export class MathNode extends BaseNode {
         this.cycleButton = new BitSize("")
         this.newRow(this.cycleButton.getElement())
     }
+
+    public getOperation(){
+        return this.dropdown.getCurrent();
+    }
+    public getType(){
+        return this.cycleButton.getCurrent();
+    }
+
 }

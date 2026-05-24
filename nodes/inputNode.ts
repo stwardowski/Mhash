@@ -8,19 +8,20 @@ let baseSockets: SocketScheme[] = [
 ];
 
 export class InputNode extends BaseNode {
-    protected get nodeKind() { return "INPUT"; }
+    protected get nodeKind() { return NodeKind.INPUT; }
 
-    private format: inputFormater;
+    private inputFormater: inputFormater;
     private readonly droplist: string[] = ['BIN', 'HEX', 'TEXT'];
-    private dropdown: Dropdown;
+    private format: Dropdown;
+    private input;
 
     constructor() {
         super(baseSockets);
-        this.dropdown = new Dropdown(this.droplist);
-        this.newRow(this.dropdown.getElement()); 
+        this.format = new Dropdown(this.droplist);
+        this.newRow(this.format.getElement()); 
 
-        const input = this.createInput();
-        this.format = new inputFormater('BIN', this.dropdown.getElement(), input);
+        this.input = this.createInput();
+        this.inputFormater = new inputFormater('BIN', this.format.getElement(), this.input);
     }
 
     private createInput(): HTMLTextAreaElement {
@@ -31,4 +32,11 @@ export class InputNode extends BaseNode {
         this.newRow(input);
         return input;
     }
+    public getFormat(){
+        return this.format.getCurrent();
+    }
+    public getInput(){
+        return this.input.textContent;
+    }
+
 }

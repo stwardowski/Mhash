@@ -4,36 +4,35 @@ import { Connections } from "./connections.js";
 
 export class CanvasController {
     private static instance: CanvasController;
-    private static innerContainer: HTMLElement;
-    private static scale: number = 1;
-
+    
     private background: HTMLElement;
+    private innerContainer: HTMLElement;
     private nodeManager: NodeManager;
     private connections: Connections;
     
+    private scale: number = 1;
     private isPanning = false;
     private dragStartX = 0;
     private dragStartY = 0;
     private offsetX = 0;
     private offsetY = 0;
+    
     private readonly MIN_SCALE = 0.1;
     private readonly MAX_SCALE = 3;
     private readonly ZOOM_SPEED = 0.001;
     
-    constructor(background: HTMLElement) {
+    private constructor(background: HTMLElement) {
         this.background = background;
         this.background.style.position = "relative";
         this.background.style.overflow = "hidden";
         
-        CanvasController.instance = this;
-        this.connections = Connections.init();
+        this.connections = Connections.getInstance();
+        this.innerContainer = this.createContainer();
         
-        CanvasController.innerContainer = this.createContainer();
-        this.background.appendChild(CanvasController.innerContainer);
+        this.background.appendChild(this.innerContainer);
+        this.innerContainer.appendChild(this.connections.getSvgCanvas());
         
-        CanvasController.innerContainer.appendChild(this.connections.getSvgCanvas());
-        
-        this.nodeManager = new NodeManager(CanvasController.innerContainer);
+        this.nodeManager = new NodeManager(this.innerContainer);
         
         const wrapperRect = this.background.getBoundingClientRect();
         this.offsetX = wrapperRect.width / 2 - 10000;
@@ -41,6 +40,51 @@ export class CanvasController {
 
         this.updateTransform();
         this.init();
+    }
+
+    public static getInstance(background?: HTMLElement): CanvasController {
+        if (!CanvasController.instance) {
+            if (!background) {
+                throw new Error("CanvasController must be initialized with background element first");
+            }
+            CanvasController.instance = new CanvasController(background);
+        }
+        return CanvasController.instance;
+    }
+
+    public getNodeManager(): NodeManager {
+        return this.nodeManager;
+    }
+
+    public getConnections(): Connections {
+        return this.connections;
+    }
+
+    public getScale(): number {
+        return this.scale;
+    }
+
+    public getOffset(): { x: number; y: number } {
+        return { x: this.offsetX, y: this.offsetY };
+    }
+
+    public getInnerContainer(): HTMLElement {
+        return this.innerContainer;
+    }
+
+    public screenToCanvas(screenX: number, screenY: number): { x: number; y: number } {
+        const rect = this.innerContainer.getBoundingClientRect();
+        return {
+            x: (screenX - rect.left) / this.scale,
+            y: (screenY - rect.top) / this.scale
+        };
+    }
+
+    public setViewport(offsetX: number, offsetY: number, scale: number): void {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.scale = Math.min(this.MAX_SCALE, Math.max(this.MIN_SCALE, scale));
+        this.updateTransform();
     }
 
     private createContainer(): HTMLElement {
@@ -56,22 +100,6 @@ export class CanvasController {
         return container;
     }
 
-    public static screenToCanvas(screenX: number, screenY: number): { x: number; y: number } {
-        const rect = CanvasController.innerContainer.getBoundingClientRect();
-        return {
-            x: (screenX - rect.left) / CanvasController.scale,
-            y: (screenY - rect.top) / CanvasController.scale
-        };
-    }
-
-    public static getScale(): number {
-        return CanvasController.scale;
-    }
-
-    public static getInnerContainer(): HTMLElement {
-        return CanvasController.innerContainer;
-    }
-
     private onWheel(e: WheelEvent): void {
         e.preventDefault();
         
@@ -79,11 +107,11 @@ export class CanvasController {
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
         
-        const oldScale = CanvasController.scale;
+        const oldScale = this.scale;
         const delta = -e.deltaY * this.ZOOM_SPEED;
-        CanvasController.scale = Math.min(this.MAX_SCALE, Math.max(this.MIN_SCALE, CanvasController.scale + delta));
+        this.scale = Math.min(this.MAX_SCALE, Math.max(this.MIN_SCALE, this.scale + delta));
         
-        const scaleChange = CanvasController.scale / oldScale;
+        const scaleChange = this.scale / oldScale;
         this.offsetX = mouseX - (mouseX - this.offsetX) * scaleChange;
         this.offsetY = mouseY - (mouseY - this.offsetY) * scaleChange;
         
@@ -111,7 +139,7 @@ export class CanvasController {
             const target = e.target as HTMLElement;
             
             if (!target.closest('.node')) {
-                const { x, y } = CanvasController.screenToCanvas(e.clientX, e.clientY);
+                const { x, y } = this.screenToCanvas(e.clientX, e.clientY);
                 this.nodeManager.createNodeAt(x, y);
             }
         }
@@ -132,6 +160,7 @@ export class CanvasController {
 
     private onKeyDown(e: KeyboardEvent): void {
         if (e.ctrlKey || e.metaKey) return;
+        if (document.activeElement !== document.body && document.activeElement !== this.background) return;
         
         const numKey = parseInt(e.key);
         if (numKey >= 1 && numKey <= 9) {
@@ -148,7 +177,14 @@ export class CanvasController {
     }
 
     private updateTransform(): void {
-        const transform = `translate(${this.offsetX}px, ${this.offsetY}px) scale(${CanvasController.scale})`;
-        CanvasController.innerContainer.style.transform = transform;
+        const transform = `translate(${this.offsetX}px, ${this.offsetY}px) scale(${this.scale})`;
+        this.innerContainer.style.transform = transform;
+    }
+
+    public destroy(): void {
+        window.removeEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('mouseup', this.onMouseUp);
+        document.removeEventListener('keydown', this.onKeyDown);
+        this.background.removeChild(this.innerContainer);
     }
 }

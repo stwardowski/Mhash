@@ -1,7 +1,8 @@
 import { Connection } from "./connection.js";
 import { Socket } from "./socket.js";
 
-type templine = SVGLineElement | null
+type templine = SVGLineElement | null;
+
 export class Connections {
     private static instance: Connections;
     private svgCanvas: SVGSVGElement;
@@ -13,16 +14,9 @@ export class Connections {
         this.setupLineDeletion();
     }
 
-    public static init(): Connections {
-        if (!Connections.instance) {
-            Connections.instance = new Connections();
-        }
-        return Connections.instance;
-    }
-
     public static getInstance(): Connections {
         if (!Connections.instance) {
-            throw new Error('Connections not initialized!');
+            Connections.instance = new Connections();
         }
         return Connections.instance;
     }
@@ -35,8 +29,8 @@ export class Connections {
         this.svgCanvas.style.pointerEvents = 'none';
     }
 
-    public getLineStatus(){
-        return this.tempLine
+    public getLineStatus() {
+        return this.tempLine;
     }
 
     private createSvgCanvas(): SVGSVGElement {
@@ -58,7 +52,7 @@ export class Connections {
         return this.svgCanvas;
     }
 
-    private makeLine(x1: number, y1: number, x2: number, y2: number, lineClass: string){
+    private makeLine(x1: number, y1: number, x2: number, y2: number, lineClass: string) {
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("x1", `${x1}`);
         line.setAttribute("y1", `${y1}`);
@@ -86,7 +80,7 @@ export class Connections {
             return null;
         }
         
-        const line = this.makeLine(x1, y1, x2, y2, "line-connection")
+        const line = this.makeLine(x1, y1, x2, y2, "line-connection");
         this.svgCanvas.appendChild(line);
         const connection = new Connection(base, target, line);
         
@@ -103,7 +97,7 @@ export class Connections {
     public createTempLine(x1: number, y1: number, x2: number, y2: number): void {
         this.removeTempLine();
          
-        const line = this.makeLine(x1,y1,x2,y2,"line-temp")
+        const line = this.makeLine(x1, y1, x2, y2, "line-temp");
         line.style.pointerEvents = 'none';
         this.svgCanvas.appendChild(line);
         this.tempLine = line;
@@ -135,6 +129,15 @@ export class Connections {
     public deleteAllConnections(): void {
         this.connections.forEach(connection => connection.destroy());
         this.connections = [];
+    }
+
+    // Metody potrzebne dla JSONConverter
+    public getAllConnections(): Connection[] {
+        return [...this.connections];
+    }
+
+    public clearAll(): void {
+        this.deleteAllConnections();
     }
 
     private setupLineDeletion(): void {

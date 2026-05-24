@@ -37,14 +37,18 @@ export class NodeManager {
         this.creatingNodeType = nodeType;
     }
 
+    public getNodes(){
+        return this.nodes;
+    }
+
     public createNodeAt(x: number, y: number): void {
         if (!this.isPlacementMode || this.creatingNodeType === null) return;
         
         const node = NodeManager.NODE_FACTORY[this.creatingNodeType]();
-        node.container.style.left = `${x}px`;
-        node.container.style.top = `${y}px`;
+        node.getContainer().style.left = `${x}px`;
+        node.getContainer().style.top = `${y}px`;
         
-        this.canvas.appendChild(node.container);
+        this.canvas.appendChild(node.getContainer());
         this.nodes.push(node);
         
         this.setPlacementMode(false, null);

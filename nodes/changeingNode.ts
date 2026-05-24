@@ -1,5 +1,6 @@
 import {BaseNode, NodeKind} from './node.js';
 import { SocketScheme, Socket, SocketType} from '../others/socket.js';
+import { Connection } from '../others/connection.js';
 
 export abstract class changeingNode extends BaseNode {
     additionalSockets: Socket[] = []
@@ -53,10 +54,15 @@ export abstract class changeingNode extends BaseNode {
             s?.destroy();
         }
     }
-    protected createAdditionalSockets(socketSchemes: SocketScheme[]) {
+    protected createAdditionalSockets(socketSchemes: SocketScheme[], prependSockets?: SocketScheme[]) {
+        if (prependSockets) {
+            this.createSockets(prependSockets, this.additionalSockets);
+        }
+        
         for (let i = 0; i < this.outputCount; i++) {
             this.createSockets(socketSchemes, this.additionalSockets);
         }
+        
         this.heightUpdate();
     }
 
@@ -94,5 +100,39 @@ export abstract class changeingNode extends BaseNode {
         const maxSockets = Math.max(this.currentIN_Y, this.currentOUT_Y);
         const requiredHeight = maxSockets + BaseNode.gap;
         this.container.style.minHeight = `${requiredHeight}px`;
+    }
+
+    protected override updateSocketPosition(){
+        this.sockets.forEach((socket: Socket) => {
+            const pos = socket.getCanvasPosition();
+            if(socket.socketType === SocketType.INPUT){
+                socket.connectedTo.forEach((connection: Connection) => {
+                    connection.updateLineEndpoint(pos.x, pos.y)
+                });
+            }
+            else{
+                socket.connectedTo.forEach((connection: Connection) => {
+                    connection.updateLineBasepoint(pos.x, pos.y)
+                });
+            }
+        });
+
+        this.additionalSockets.forEach((socket: Socket) => {
+            const pos = socket.getCanvasPosition();
+            if(socket.socketType === SocketType.INPUT){
+                socket.connectedTo.forEach((connection: Connection) => {
+                    connection.updateLineEndpoint(pos.x, pos.y)
+                });
+            }
+            else{
+                socket.connectedTo.forEach((connection: Connection) => {
+                    connection.updateLineBasepoint(pos.x, pos.y)
+                });
+            }
+        });
+    }
+
+    public override getSockets() {
+        return this.sockets.concat(this.additionalSockets);
     }
 }

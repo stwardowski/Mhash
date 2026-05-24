@@ -9,20 +9,20 @@ let baseSockets: SocketScheme[] = [
 ];
 
 export class BitLogicNode extends BaseNode {
-    protected get nodeKind() { return "BITLOGIC"; }
+    protected get nodeKind() { return NodeKind.BITLOGIC; }
 
     private readonly bitOperationList: string[] = ['AND', 'OR', 'XOR', 'NOT'];
     private readonly directionList: string[] = ['RIGHT', 'LEFT'];
 
     private type: Dropdown;
-    private way: Dropdown;
-
     constructor() {
         super(baseSockets);
         this.type = new Dropdown(this.bitOperationList)
-        this.way = new Dropdown(this.directionList)
         this.newRow(this.type.getElement());
-        this.newRow(this.way.getElement());
+    }
+
+    public getOperation(){
+        return this.type.getCurrent();
     }
 
 }

@@ -16,9 +16,9 @@ export enum NodeKind {
 }
 
 export abstract class BaseNode {
-    public container: HTMLDivElement;
-
+    protected container: HTMLDivElement;
     protected sockets: Socket[] = [];
+
     private startY = 50;
     static gap = 25;
 
@@ -28,7 +28,7 @@ export abstract class BaseNode {
     public currentIN_Y = this.startY
     public currentOUT_Y = this.startY
 
-    protected abstract nodeKind: string;
+    protected abstract nodeKind: NodeKind;
     protected content;
     protected rows = []
     private isDragging = false;
@@ -83,7 +83,7 @@ export abstract class BaseNode {
     private createHeader(): void {
         const header = document.createElement("div");
         header.className = "node-header";
-        header.innerText = this.nodeKind;
+        header.innerText = NodeKind[this.nodeKind];
         header.style.cursor = "grab";
         
         let startX = 0, startY = 0, nodeX = 0, nodeY = 0;
@@ -104,7 +104,7 @@ export abstract class BaseNode {
         window.addEventListener('mousemove', (e) => {
             if (!this.isDragging) return;
 
-            const scale = this.getScale();
+            const scale = CanvasController.getInstance().getScale();
             this.container.style.left = `${nodeX + (e.clientX - startX) / scale}px`;
             this.container.style.top = `${nodeY + (e.clientY - startY) / scale}px`;
             this.updateSocketPosition()
@@ -118,20 +118,29 @@ export abstract class BaseNode {
         this.container.appendChild(header);
     }
 
-    private getScale(): number {
-        return CanvasController.getScale();
-    }
-
     private createNodeContent(){
         const content = document.createElement("div");
         content.className = "node-content";
         return content
     }    
 
+    public getContainer(){
+        return this.container;
+    }
+
     public newRow(content: HTMLElement) {
         const row = document.createElement("div");
         row.className = "row";
         row.appendChild(content);    
         this.content.appendChild(row);
+    }
+    public getSockets() {
+        return this.sockets;
+    }
+    public getID() {
+        return this.ID;
+    }
+    public getKind(){
+        return this.nodeKind;
     }
 }

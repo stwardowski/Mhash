@@ -12,7 +12,7 @@ let addSockets: SocketScheme[] = [
 ];
 
 export class MergeNode extends changeingNode {
-    protected get nodeKind() { return "MERGE"; }    
+    protected get nodeKind() { return NodeKind.MERGE; }    
 
     constructor() {
         super(baseSockets, addSockets);

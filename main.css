@@ -1,3 +1,16 @@
+:root {
+    --node-color: #110305;           /* Coffee Bean */
+    --node-background: #FFF9F2;      /* Floral White */
+    --node-shadow: #BA2D0B;          /* Brick Ember */
+    --node-accent: #003E1F;          /* Deep Forest */
+    --node-text: #110305;            /* Coffee Bean */
+    --node-light: #75d0a8;            /* Muted Teal */
+    --node-hover: #BA2D0B;           /* Brick Ember */
+    --node-white: #b0e2cc;          /* Floral White */
+    --node-black-opacity: rgba(17, 3, 5, 0.35);
+    --node-border-light: rgba(0, 62, 31, 0.25);
+}
+
 body {
     user-select: none;
     -webkit-user-select: none;
@@ -19,33 +32,28 @@ html, body {
 #tools {
     background: var(--node-color);
     width: 10%;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    box-shadow: 2px 0 10px var(--node-black-opacity);
 }
-
 #canvas {
     background: var(--node-background);
     width: 90%;
     position: relative;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--node-light) 0.5px, transparent 0.5px);
+    background-size: 3px 3px;
 }
-
-:root {
-    --node-color: #53170d;
-    --node-background: #e0c57c;
-    --node-shadow: #f04b0a;
-    --node-accent: #0b5253;
-}
-
 /* ==================== NODE ==================== */
 .node {
-    background: var(--node-background);
+    background: var(--node-white);
     border: 3px solid var(--node-color);
     box-shadow: 5px 5px 0px var(--node-shadow);
     font-family: 'Courier New', monospace;
     font-size: 12px;
-    color: white;
+    color: var(--node-text);
     width: 180px;
+    min-height: 130px;
     position: relative;
-    transition: transform 0.3s ease, box-shadow 0.1s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .node:hover {
@@ -55,16 +63,17 @@ html, body {
 
 .node-header {
     background: var(--node-color);
-    color: #FFFFFF;
+    color: var(--node-background);
     padding: 6px 8px;
     font-weight: bold;
     font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 0px var(--node-black-opacity);
 }
-.node-content{
-    padding:5%;
+
+.node-content {
+    padding: 5%;
 }
 
 /* ==================== ROW ==================== */
@@ -73,11 +82,10 @@ html, body {
     align-items: center;
     padding: 5px 8px;
     gap: 6px;
-    border-bottom: 1px solid rgba(200, 85, 110, 0.3);
-    background: var(--node-background);
+    border-bottom: 1px solid var(--node-border-light);
+    background: var(--node-light);
     transition: background 0.1s ease;
 }
-
 
 .row:last-child {
     border-bottom: none;
@@ -87,36 +95,33 @@ html, body {
 .button, .mode-btn {
     background: var(--node-accent);
     border: 2px solid var(--node-color);
-    color: white;
+    color: var(--node-background);
     padding: 4px 12px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+    box-shadow: 2px 2px 0px var(--node-black-opacity);
     transition: all 0.1s ease;
     font-weight: bold;
 }
 
 .button:hover, .mode-btn:hover {
     background: var(--node-color);
-    color: white;
     border-color: var(--node-color);
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
-    transform: translate(-1px, -1px);
 }
 
 .button.active, .mode-btn.active {
-    background: var(--node-color);
-    color: white;
+    background: var(--node-shadow);
+    color: var(--node-white);
     border-color: var(--node-color);
-    box-shadow: inset 1px 1px 0px rgba(0,0,0,0.3);
+    box-shadow: inset 1px 1px 0px var(--node-black-opacity);
     transform: translate(1px, 1px);
 }
 
 .button:active, .mode-btn:active {
-    box-shadow: inset 1px 1px 0px rgba(0,0,0,0.3);
+    box-shadow: inset 1px 1px 0px var(--node-black-opacity);
     transform: translate(1px, 1px);
 }
 
@@ -127,8 +132,8 @@ html, body {
 }
 
 .btn-group span {
-    color: white;
-    opacity: 0.6;
+    color: var(--node-color);
+    opacity: 0.8;
     font-weight: bold;
     font-size: 10px;
 }
@@ -137,7 +142,7 @@ html, body {
 input[type="number"], .num-input, .count {
     background: var(--node-accent);
     border: 2px solid var(--node-color);
-    color: white;
+    color: var(--node-background);
     padding: 4px 8px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
@@ -147,16 +152,10 @@ input[type="number"], .num-input, .count {
     font-weight: bold;
 }
 
-
-.input-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-input {
+#hash {
     border: 2px solid var(--node-color);
-    color: rgb(150, 50, 50);
+    background: var(--node-light);
+    color: var(--node-text);
     padding: 4px 8px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
@@ -164,15 +163,47 @@ input {
     transition: all 0.1s ease;
     width: 80%;
     min-height: 60px;
-     word-wrap: break-word;
+    word-wrap: break-word;
+    resize: vertical;
+}
+
+input[type="number"]:focus, .num-input:focus, .count:focus {
+    background: var(--node-shadow);
+    border-color: var(--node-shadow);
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+textarea {
+    border: 2px solid var(--node-color);
+    background: var(--node-light);
+    color: var(--node-text);
+    padding: 4px 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    outline: none;
+    transition: all 0.1s ease;
+    width: 80%;
+    min-height: 60px;
+    word-wrap: break-word;
+    resize: vertical;
+}
+
+textarea:focus {
+    border-color: var(--node-shadow);
+    background: var(--node-white);
 }
 
 /* ==================== SPAN ==================== */
 span {
-    color: white;
+    color: var(--node-color);
     font-family: 'Courier New', monospace;
     font-size: 10px;
-    opacity: 0.7;
+    opacity: 0.8;
     font-weight: bold;
 }
 
@@ -180,7 +211,7 @@ span {
 select, .dropdown-select {
     background: var(--node-accent);
     border: 2px solid var(--node-color);
-    color: white;
+    color: var(--node-background);
     padding: 4px 8px;
     font-family: 'Courier New', monospace;
     font-size: 11px;
@@ -196,8 +227,8 @@ select:hover, .dropdown-select:hover {
 }
 
 select option, .dropdown-select option {
-    background: var(--node-background);
-    color: white;
+    background: var(--node-light);
+    color: var(--node-text);
 }
 
 /* ==================== LINIE ==================== */
@@ -205,17 +236,17 @@ select option, .dropdown-select option {
     stroke: var(--node-shadow);
     stroke-width: 2.5;
     transition: all 0.2s ease;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 1px 2px var(--node-black-opacity));
 }
 
 .line-connection:hover {
-    stroke: rgba(243, 12, 12, 0.5);
+    stroke: var(--node-text);
     stroke-width: 6;
     cursor: pointer;
 }
 
 .line-temp {
-    stroke: rgba(243, 12, 12, 0.5);
+    stroke: var(--node-accent);
     stroke-width: 2;
     stroke-dasharray: 6;
     animation: dash 0.6s linear infinite;
@@ -241,7 +272,7 @@ select option, .dropdown-select option {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.3);
+    background: var(--node-black-opacity);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -250,5 +281,5 @@ select option, .dropdown-select option {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: white;
+    background: var(--node-shadow);
 }

@@ -14,15 +14,19 @@ let addSockets: SocketScheme[] = [
 ];
 
 export class SplitNode extends changeingNode {
-    protected get nodeKind() { return "SPLIT"; }    
-    private bitSize: BitSize;
+    protected get nodeKind() { return NodeKind.SPLIT; }    
+    private cycleButton: BitSize;
     
     constructor() {
         super(baseSockets, addSockets);
         this.renderCount();
-        this.bitSize = new BitSize("");
-        this.newRow(this.bitSize.getElement());
+        this.cycleButton = new BitSize("");
+        this.newRow(this.cycleButton.getElement());
         this.initOutputs(this.content, 2);
         this.createAdditionalSockets(this.additonalSocketScheme);
+    }
+
+    public getType(){
+        return this.cycleButton.getCurrent();
     }
 }

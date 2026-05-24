@@ -11,7 +11,10 @@ export class inputFormater extends FormatManager {
     }
 
     protected onFormatChanged(): void {
-        this.updateInput();
+        if (this.input) {
+            this.input.value = this.message;
+            this.input.placeholder = placeholders[this.format];
+        }
     }
 
     private handleInput(): void {
@@ -28,7 +31,9 @@ export class inputFormater extends FormatManager {
     }
 
     private updateInput(): void {
-        this.input.value = this.message;    
-        this.input.placeholder = placeholders[this.format];
+        if (this.input) {
+            this.input.value = this.message;    
+            this.input.placeholder = placeholders[this.format];
+        }
     }
 }

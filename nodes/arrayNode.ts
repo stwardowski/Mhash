@@ -1,4 +1,4 @@
-import {changeingNode } from './changeingNode.js';
+import { changeingNode } from './changeingNode.js';
 import { SocketScheme, DataType, SocketType } from '../others/socket.js';
 import { NodeKind, BaseNode } from './node.js';
 
@@ -19,16 +19,20 @@ let addReadSocketArray: SocketScheme[] = [
 type mode = 'WRITE' | 'READ';
 
 export class ArrayNode extends changeingNode {
-    protected get nodeKind() { return "ARRAY"; }
+    protected get nodeKind() { return NodeKind.ARRAY; }
     private currentMode: mode = 'WRITE';
 
     constructor() {
-        super(baseSocketArray, addWriteSocketArray);
+        super([], addWriteSocketArray);
         this.currentOUT_Y += BaseNode.gap;
         this.renderLayout();
         this.renderCount();
         this.initOutputs(this.content, 2);
-        this.createAdditionalSockets(this.additonalSocketScheme);
+        this.createAdditionalSockets(this.additonalSocketScheme, baseSocketArray);
+    }
+
+    public getMode(){
+        return this.currentMode;
     }
 
     private updateMode(mode: mode) {
@@ -37,7 +41,15 @@ export class ArrayNode extends changeingNode {
 
         this.additonalSocketScheme = mode === 'READ' ? addReadSocketArray : addWriteSocketArray;
         this.deleteAllSockets();
-        this.createAdditionalSockets(this.additonalSocketScheme);
+        this.currentIN_Y = 50;
+        this.currentOUT_Y = 50;
+
+        
+        if (mode === 'WRITE') {
+            this.createAdditionalSockets(this.additonalSocketScheme, baseSocketArray);
+        } else {
+            this.createAdditionalSockets(this.additonalSocketScheme);
+        }
     }
 
     private renderLayout() {

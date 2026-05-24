@@ -7,12 +7,15 @@ let baseSockets: SocketScheme[] = [
 ];
 
 export class OutputNode extends BaseNode {
-    protected get nodeKind() { return "OUTPUT"; }    
+    protected get nodeKind() { return NodeKind.OUTPUT; }    
 
-    
     private readonly format: string[] = ['BIN', 'TEXT', 'HEX'];
     private dropdown: Dropdown;
     private output: HTMLInputElement;
+
+    public getFormat(){
+        return this.dropdown.getCurrent();
+    }
 
     constructor() {
         super(baseSockets);

@@ -15,10 +15,10 @@ export enum DataType {
 }
 
 export const TypeColors: Record<DataType, string> = {
-    [DataType.ARRAY]: "#BC8F8F",
-    [DataType.ADAPTING]: "#ffffff",
-    [DataType.NUMBER]: "#f64636",
-    [DataType.WHOLE]: "#00BFFF"
+    [DataType.ARRAY]: "#003E1F",      /* Deep Forest */
+    [DataType.ADAPTING]: "#73BA9B",   /* Muted Teal */
+    [DataType.NUMBER]: "#BA2D0B",     /* Brick Ember */
+    [DataType.WHOLE]: "#110305"       /* Coffee Bean */
 };
 
 export type SocketScheme = [DataType, SocketType];
@@ -92,7 +92,7 @@ export class Socket {
 
     public getCanvasPosition(): { x: number; y: number } {
         const rect = this.socketDiv.getBoundingClientRect();
-        const position = CanvasController.screenToCanvas(rect.x, rect.y);
+        const position = CanvasController.getInstance().screenToCanvas(rect.x, rect.y);
         position.x += rect.width / 2;
         position.y += rect.height / 2;
         return position;
@@ -112,12 +112,12 @@ export class Socket {
         e.stopPropagation();
         
         const pos = this.getCanvasPosition();
-        const mousePos = CanvasController.screenToCanvas(e.clientX, e.clientY);
+        const mousePos = CanvasController.getInstance().screenToCanvas(e.clientX, e.clientY);
         this.connections.createTempLine(pos.x, pos.y, mousePos.x, mousePos.y);
                 
         const onMove = (e: MouseEvent) => {
             e.stopPropagation();
-            const currentMousePos = CanvasController.screenToCanvas(e.clientX, e.clientY);
+            const currentMousePos = CanvasController.getInstance().screenToCanvas(e.clientX, e.clientY);
             this.connections.updateTempLine(currentMousePos.x, currentMousePos.y);
         };
         

@@ -8,7 +8,6 @@ export const placeholders: Record<InFormat, string> = {
 };
 
 export const regexes: Record<InFormat, string> = {
-
     'BIN': '^[01]{1,64}$',           
     'HEX': '^[0-9A-Fa-f]{1,32}$',    
     'TEXT': '^(?!\\s*$).+',           
@@ -42,7 +41,7 @@ export class FormatManager {
             this.message = this.convert(this.message, oldFormat, this.format);
         }
         
-        this.onFormatChanged();
+        this.onFormatChanged(); 
     }
 
     protected onFormatChanged(): void {
