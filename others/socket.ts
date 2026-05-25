@@ -1,6 +1,7 @@
 import { CanvasController } from "./canvasNavigation.js";
 import { Connections } from "./connections.js";
 import { Connection } from "./connection.js";
+import { BaseNode } from "../nodes/node.js";
 
 export enum SocketType {
     INPUT = "input",
@@ -35,16 +36,19 @@ export class Socket {
     static SocketID = 0;
     private static socketRegistry: Map<HTMLDivElement, Socket> = new Map();
     public connections = Connections.getInstance();
-
     
-    constructor(datatype: DataType, socketType: SocketType, ypos: number) {
+    private nodeParent: BaseNode;
+    
+    constructor(datatype: DataType, socketType: SocketType, nodeParent: BaseNode) {
         this.id = Socket.SocketID++;
         this.socketType = socketType;
         this.dataType = datatype;
 
-        this.socketDiv = this.createDiv(ypos);
+        this.socketDiv = this.createDiv(socketType === SocketType.INPUT ? nodeParent.currentIN_Y : nodeParent.currentOUT_Y);
+
         this.circleDiv = this.createCircle();
         this.socketDiv.appendChild(this.circleDiv);
+        this.nodeParent = nodeParent
         
         Socket.socketRegistry.set(this.socketDiv, this);
         this.addListeners();
@@ -96,6 +100,10 @@ export class Socket {
         position.x += rect.width / 2;
         position.y += rect.height / 2;
         return position;
+    }
+
+    public getNodeParent(){
+        return this.nodeParent;
     }
 
 

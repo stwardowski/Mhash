@@ -49,8 +49,7 @@ export abstract class BaseNode {
 
     protected createSockets(socketSchemes: SocketScheme[], socketsToWriteTo: Socket[]) {
         socketSchemes.forEach(([dataType, socketType]) => {
-            const yPos = socketType === SocketType.INPUT ? this.currentIN_Y : this.currentOUT_Y;
-            const newSocket = new Socket(dataType, socketType, yPos, );
+            const newSocket = new Socket(dataType, socketType, this);
 
             if (socketType === SocketType.INPUT) {
                 this.currentIN_Y += BaseNode.gap;

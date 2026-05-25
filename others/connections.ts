@@ -32,6 +32,7 @@ export class Connections {
     public getLineStatus() {
         return this.tempLine;
     }
+    
 
     private createSvgCanvas(): SVGSVGElement {
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
